@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <title>Instant Weather</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <title>Instant Weather</title>
 </head>
 <body>
-    <header>
-        <h1>INSTANT WEATHER</h1>
-        <p>La météo de votre ville en temps réel et à la demande !</p>
-        <p>Sélectionnez votre ville pour en avoir toutes les prévisions.</p>
-    </header>
-    <main>
-        <section id="postal">
-          <form id="postal_form">
-            <label for="code-postal">Saisissez le code postal souhaité.</label>
-            <input type="text" id="code-postal" placeholder="Entrez un code postal..."/>
-            <label for="communeSelect" class="commune"></label>
-            <select id="communeSelect"></select>
-            <button type="submit">Valider</button>
-          </form>
-        </section>
-        <section id="weatherInformation"></section>
-    </main>
-    <script src="main.js"></script>
+  <header>
+    <h1>INSTANT WEATHER</h1>
+    <p>La météo de votre ville en temps réel et à la demande !</p>
+    <p>Sélectionnez votre ville pour en avoir toutes les prévisions.</p>
+  </header>
+  <main>
+    <section id="postal">
+      <form id="postal_form">
+        <label for="code-postal">Saisissez le code postal souhaité :</label>
+        <input type="text" id="code-postal" placeholder="Entrez un code postal..." maxlength="5" />
+        <label for="communeSelect" class="commune">
+          Choisissez votre commune :
+        </label>
+        <select id="communeSelect"></select>
+        <button type="button" id="validationButton">Valider</button>
+      </form>
+    </section>
+    <section id="weatherInformation">
+      <p id="weatherText">Les infos météo apparaîtront ici</p>
+    </section>
+    <label for="daysSelect">Nombre de jours :</label>
+        <select id="daysSelect">
+            <option value="1">1 jour</option>
+            <option value="2">2 jours</option>
+            <option value="3">3 jours</option>
+            <option value="4">4 jours</option>
+            <option value="5">5 jours</option>
+            <option value="6">6 jours</option>
+            <option value="7">7 jours</option>
+        </select>
+
+  </main>
+  <script src="/main.js"></script>
 </body>
 </html>

@@ -1,114 +1,117 @@
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 body {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  font-family: "Winky Rough", sans-serif;
-  background-image: url(derr.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
+    background-image: url(derr.png);
+    margin: auto;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    font-family: "Winky Rough", sans-serif;
+    padding: 20px;
 }
+
 header {
-  margin: auto;
-  border-radius: 15px;
-  text-align: center;
+    margin: 20px auto;
+    border-radius: 15px;
+    text-align: center;
+    width: 100%;
 }
+
 h1 {
-background-color: aqua;
-border-radius: 10px;
-padding: 10px;
-font-size: 50px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 50px;
 }
+
 p {
-color: white;
-font-size: 30px;
-margin: auto;
-padding: 10px;
+    font-size: 30px;
+    margin: 10px auto;
+    padding: 10px;
 }
+
 main {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
+
 #postal {
-  background-color: aqua;
-  border: 2px solid aqua;
-  text-align: center;
-  margin: 20px auto;
-  border-radius: 15px;
-  padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 255, 255);
+    text-align: center;
+    margin: 20px auto;
+    border-radius: 15px;
+    padding: 20px;
+    width: 80%;
 }
+
 #postal_form {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
-#postal_form input, #postal_form select {
-  min-width: 280px;
+
+#postal_form input,
+#postal_form select {
+    min-width: 280px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #00eeff;
 }
+
 .commune {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
+
 #validationButton {
-  display: none;
-  margin: 20px auto;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+    display: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-size: 16px;
 }
+
 #communeSelect {
-  display: block;
-  margin-top: 10px;
-  padding: 5px;
-  z-index: 999;
+    display: none;
 }
+
 label {
-font-size: 25px;
+    font-size: 25px;
 }
+
 #code-postal {
-  margin-top: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  font-size: 20px;
-  border-radius: 5px;
+    text-align: center;
 }
+
 #weatherInformation {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
-  width: 80%;
-  border-radius: 15px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #333;
+    display: none;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
 }
-#weatherInformation div {
-  text-align: center;
-  margin: 10px 5px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: rgba(0, 255, 255, 0.8);
-}
-.reloadButton {
-  width: 280px;
-  margin: 20px auto;
-  padding: 10px 20px;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
+
+#weatherText {
+    font-size: 24px;
 }
