@@ -2,13 +2,13 @@ const CLE_API = 'a06cefd21bcfe179404023316c1ede7ecab94915b9a7959ae201c44927632b2
 
 // Attendre que le DOM soit complètement chargé
 document.addEventListener('DOMContentLoaded', function() {
-    initializeDarkMode();
-    initializeDaysSlider();
-    setupEventListeners();
+    DemarrerDarkMode();
+    DemarrerMenuJours();
+    EcouteursEvenements();
 });
 
 // Initialisation du mode sombre
-function initializeDarkMode() {
+function DemarrerDarkMode() {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     
@@ -41,7 +41,7 @@ function initializeDarkMode() {
 }
 
 // Initialisation du slider de jours
-function initializeDaysSlider() {
+function DemarrerMenuJours() {
     const daysSelect = document.getElementById("daysSelect");
     const daysValue = document.getElementById("days-value");
     
@@ -60,8 +60,7 @@ function initializeDaysSlider() {
     }
 }
 
-// Configuration des écouteurs d'événements
-function setupEventListeners() {
+function EcouteursEvenements() {
     const codePostalInput = document.getElementById('code-postal');
     const validationButton = document.getElementById('validationButton');
     
@@ -70,9 +69,6 @@ function setupEventListeners() {
     
     // Événement pour la recherche météo
     validationButton.addEventListener('click', handleMeteoSearch);
-    
-    // Mettre à jour l'année du copyright
-    document.getElementById('current-year').textContent = new Date().getFullYear();
 }
 
 // Fonction de debounce pour limiter les appels API
