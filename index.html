@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Instant Weather - Consultez la météo en temps réel de votre ville à partir de votre code postal">
+  <meta name="description"
+    content="Instant Weather - Consultez la météo en temps réel de votre ville à partir de votre code postal">
   <meta name="theme-color" content="#4285f4">
-  
-  <!-- Préchargement des ressources critiques -->
-  <link rel="preload" href="/style.css" as="style">
-  <link rel="preload" href="/main.js" as="script">
-  
-  <!-- Polices Google Fonts avec display=swap -->
+
+  <!-- Police de google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome via CDN avec intégrité -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet">
+
+  <!-- Toutes les petites icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="/style.css">
-  
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  
+
   <title>Instant Weather - Météo en temps réel</title>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -44,26 +40,18 @@
     <main>
       <section id="selectionMenu" aria-labelledby="selectionTitle">
         <h2 id="selectionTitle" class="sr-only">Sélection de la commune</h2>
-        
+
         <form id="postal_form" aria-labelledby="searchFormLabel">
           <h3 id="searchFormLabel">Recherche par code postal</h3>
-          
+
           <div class="form-group">
             <label for="code-postal">
               <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Code postal
             </label>
-            <input 
-              type="text" 
-              id="code-postal" 
-              placeholder="Entrez un code postal..." 
-              maxlength="5" 
-              pattern="[0-9]{5}" 
-              inputmode="numeric"
-              aria-required="true"
-              autocomplete="postal-code"
-            />
+            <input type="text" id="code-postal" placeholder="Entrez un code postal..." maxlength="5" pattern="[0-9]{5}"
+              inputmode="numeric" aria-required="true" autocomplete="postal-code" />
           </div>
-          
+
           <div class="form-group">
             <label for="communeSelect" class="commune">
               <i class="fas fa-city" aria-hidden="true"></i> Commune
@@ -72,57 +60,48 @@
               <option value="" disabled selected>Sélectionnez une commune</option>
             </select>
           </div>
-          
+
           <button type="button" id="validationButton" class="primary-button">
             <i class="fas fa-search" aria-hidden="true"></i> Rechercher
           </button>
         </form>
-        
+
         <div class="option-section">
           <h3>Options de prévision</h3>
-          
+
           <div class="form-group slider-group">
             <label for="daysSelect" class="days-label">
               <i class="fas fa-calendar-alt" aria-hidden="true"></i> Prévisions
               <output id="days-value" for="daysSelect">1 jour</output>
             </label>
-            <input 
-              type="range" 
-              id="daysSelect" 
-              min="1" 
-              max="7" 
-              value="1"
-              aria-valuemin="1"
-              aria-valuemax="7"
-              aria-valuenow="1"
-              aria-valuetext="1 jour"
-            />
+            <input type="range" id="daysSelect" min="1" max="7" value="1" aria-valuemin="1" aria-valuemax="7"
+              aria-valuenow="1" aria-valuetext="1 jour" />
           </div>
-          
+
           <h3>Options d'affichage</h3>
           <fieldset class="checkbox-group">
             <legend class="sr-only">Informations à afficher</legend>
-            
+
             <div class="checkbox-item">
               <input type="checkbox" id="checkbox-lat">
-              <label for="checkbox-lat">Latitude décimale</label>
+              <label for="checkbox-lat">Latitude décimale (°)</label>
             </div>
-            
+
             <div class="checkbox-item">
               <input type="checkbox" id="checkbox-lon">
-              <label for="checkbox-lon">Longitude décimale</label>
+              <label for="checkbox-lon">Longitude décimale (°)</label>
             </div>
-            
+
             <div class="checkbox-item">
               <input type="checkbox" id="checkbox-rain">
               <label for="checkbox-rain">Cumul de pluie (mm)</label>
             </div>
-            
+
             <div class="checkbox-item">
               <input type="checkbox" id="checkbox-wind">
               <label for="checkbox-wind">Vent moyen (km/h)</label>
             </div>
-            
+
             <div class="checkbox-item">
               <input type="checkbox" id="checkbox-winddir">
               <label for="checkbox-winddir">Direction du vent (°)</label>
@@ -130,19 +109,19 @@
           </fieldset>
         </div>
       </section>
-      
+
       <section id="weatherContainer" aria-live="polite">
         <div id="weatherInformation">
           <p id="weatherText">Entrez un code postal et sélectionnez votre commune pour voir la météo</p>
         </div>
       </section>
     </main>
-    
+
     <footer>
-      <p>© <time id="current-year">2025</time> Instant Weather - Tous droits réservés</p>
+      <p>© <time id="current-year">2025</time> Bretonnière Martin - Tous droits réservés</p>
     </footer>
   </div>
-  
   <script src="/main.js" defer></script>
 </body>
+
 </html>

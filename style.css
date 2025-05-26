@@ -1,598 +1,603 @@
 :root {
-    --primary: #4285f4;
-    --primary-dark: #3367d6;
-    --secondary: #34a853;
-    --accent: #fbbc05;
-    --warning: #ea4335;
-    --primary-color: #4285f4;
-    --background-color: #09cece;
-    --card-background: #f5f5f5;
-    --input-background: #ffffff;
-    --shadow-color: rgba(39, 36, 36, 0.1);
-    --button-hover: #3367d6;
-    --header-background: #f8f9fa;
-    --bg-main: #f8f9fa;
-    --bg-card: #ffffff;
-    --bg-input: #ffffff;
-    --text: #202124;
-    --text-secondary: #5f6368;
-    --border: #dadce0;
-    --border-hover: #9aa0a6;
-    --shadow: rgba(60, 64, 67, 0.1);
-    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    --box-shadow: 0 2px 10px var(--shadow);
-    --transition: all 0.3s ease-in-out;
-  }
-  
-  .dark-mode {
-    --primary-color: #5e97f6;
-    --background-color: #251f1f;
-    --card-background: #1e1e1e;
-    --input-border: #444444;
-    --button-hover: #4285f4;
-    --header-background: #1a1a1a;
-  }
+  --primary: #4285f4;
+  --primary-dark: #3367d6;
+  --secondary: #34a853;
+  --warning: #ea4335;
+  --background-color: #09cece;
+  --card-background: #f5f5f5;
+  --input-background: #ffffff;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --box-shadow: 0 2px 10px rgba(60, 64, 67, 0.1);
+  --transition: all 0.3s ease-in-out;
+}
+
+.dark-mode {
+  --background-color: #251f1f;
+  --card-background: #1e1e1e;
+  --text: #ffffff;
+  --text-secondary: #cccccc;
+  --border: #333333;
+  --input-background: #000000;
+}
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html {
-    font-size: 16px;
-    scroll-behavior: smooth;
-  }
-  
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background-color);
-    line-height: 1.6;
-    transition: var(--transition);
-    padding: 0;
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  line-height: 1.6;
+  transition: var(--transition);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  padding: 2rem 0;
+  text-align: center;
+  margin-bottom: 2rem;
+  background-color: var(--card-background);
+  position: relative;
+}
+
+h1 {
+  font-family: 'Winky Rough', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+#themeToggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  background-color: var(--card-background);
+  transition: var(--transition);
+}
+
+#themeToggle:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+#selectionMenu {
+  flex: 0 0 auto;
+  min-width: 300px;
+  background: var(--card-background);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  align-self: flex-start;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 0.75rem 0.9375rem;
+  font-size: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--input-background);
+  color: var(--text);
+  transition: var(--transition);
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+  outline: none;
+}
+
+input[type="text"]:hover,
+select:hover {
+  border-color: var(--border-hover);
+}
+
+/* Styles spécifiques pour codePostal et CommuneSelect */
+#codePostal, #CommuneSelect {
+  background-color: white;
+  color: black;
+}
+
+.dark-mode #codePostal,
+.dark-mode #CommuneSelect {
+  background-color: black;
+  color: white;
+}
+
+.primary-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+.primary-button:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.primary-button:active {
+  transform: translateY(0);
+}
+
+.option-section {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+}
+
+.slider-group {
+  margin-bottom: 1.5rem;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 0.5rem;
+  background: var(--border);
+  border-radius: 1rem;
+  cursor: pointer;
+  margin: 1rem 0;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px rgba(66, 133, 244, 0.2);
+}
+
+output {
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 0.5rem;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-item label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--border);
+  border-radius: 0.25rem;
+  background-color: var(--input-background);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.75rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translate(-2px, -2px);
+  position: absolute;
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+}
+
+#weatherContainer {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+#weatherInformation {
+  background: var(--card-background);
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.weather-data {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+}
+
+.weather-card {
+  background: var(--card-background);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--border);
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px var(--shadow);
+}
+
+.weather-date {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.weather-icon {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+}
+
+.weather-temp {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.weather-details {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.weather-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px dotted var(--border);
+}
+
+.weather-detail-label {
+  color: var(--text-secondary);
+}
+
+.weather-detail-value {
+  font-weight: 500;
+}
+
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Styles pour la section d'historique */
+.history-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.no-history {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 1rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item:hover {
+  background-color: rgba(66, 133, 244, 0.05);
+}
+
+.history-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.history-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.history-location i {
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.postal-code {
+  color: var(--text-secondary);
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
+.history-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.history-days,
+.history-date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.history-days i,
+.history-date i {
+  font-size: 0.8rem;
+}
+
+.history-reload-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.history-reload-btn:hover {
+  background: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+.clear-history-btn {
+  background: var(--warning);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.clear-history-btn:hover {
+  background: #c5221f;
+  transform: scale(1.05);
+}
+
+#historySection h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.history-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-container::-webkit-scrollbar-track {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.history-container::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.history-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+.dark-mode .history-container {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-color: #333333;
+}
+
+.dark-mode .history-item {
+  border-color: #333333;
+}
+
+.dark-mode .history-item:hover {
+  background-color: rgba(66, 133, 244, 0.1);
+}
+
+.dark-mode .history-location {
+  color: #ffffff;
+}
+
+.dark-mode .history-details {
+  color: #cccccc;
+}
+
+.dark-mode .postal-code {
+  color: #cccccc;
+}
+
+.dark-mode .no-history {
+  color: #cccccc;
+}
+
+@media screen and (max-width: 768px) {
   .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
   }
-  
-  /* Classes d'accessibilité */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  
-  /* En-tête */
-  header {
-    padding: 2rem 0;
-    text-align: center;
-    margin-bottom: 2rem;
-    position: relative;
-    background-color: var(--header-background);
-  }
-  
-  .header-top {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-bottom: 0.5rem;
-  }
-  
-  h1 {
-    font-family: 'Winky Rough', sans-serif;
-    font-size: 3rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    margin: 0;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  
-  .tagline {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-  }
-  
-  #themeToggle {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: 2px solid var(--border);
-    border-radius: 50px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text);
-    font-size: 0.9rem;
-    background-color: var(--bg-card);
-    transition: var(--transition);
-  }
-  
-  #themeToggle:hover {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-  }
-  
-  .dark-mode-icon,
-  .light-mode-icon {
-    font-size: 1.2rem;
-  }
-  
-  [data-theme="dark"] .dark-mode-icon {
-    display: none;
-  }
-  
-  [data-theme="light"] .light-mode-icon {
-    display: none;
-  }
-  
-  /* Mise en page principale */
+
   main {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    flex: 1;
-  }
-  
-  /* Menu de sélection */
-  #selectionMenu {
-    flex: 1;
-    min-width: 300px;
-    background: var(--bg-card);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-    position: relative;
-    z-index: 1;
-    transition: var(--transition);
-    height: fit-content;
-  }
-  
-  #selectionMenu::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0.3rem;
-    background: var(--gradient);
-    border-radius: 1rem 1rem 0 0;
-  }
-  
-  #selectionMenu h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    color: var(--text);
-    font-weight: 600;
-  }
-  
-  /* Formulaires */
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  form {
-    margin-bottom: 2rem;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text);
-    font-size: 1rem;
-    font-weight: 500;
-  }
-  
-  input[type="text"],
-  select {
-    width: 100%;
-    padding: 0.75rem 0.9375rem;
-    font-size: 1rem;
-    border: 2px solid var(--border);
-    border-radius: 0.5rem;
-    background: var(--bg-input);
-    color: var(--text);
-    transition: var(--transition);
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  
-  input[type="text"]:focus,
-  select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
-    outline: none;
-  }
-  
-  input[type="text"]:hover,
-  select:hover {
-    border-color: var(--border-hover);
-  }
-  
-  /* Style des select avec flèche personnalisée */
-  select {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" fill="%235f6368"><path d="M0 0h12L6 6z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 2.5rem;
-  }
-  
-  [data-theme="dark"] select {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" fill="%239aa0a6"><path d="M0 0h12L6 6z"/></svg>');
-  }
-  
-  /* Bouton */
-  .primary-button {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    transition: var(--transition);
-    margin-top: 0.5rem;
-  }
-  
-  .primary-button:hover {
-    background: var(--primary-dark);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    transform: translateY(-1px);
-  }
-  
-  .primary-button:active {
-    transform: translateY(0);
-  }
-  
-  /* Options d'affichage */
-  .option-section {
-    border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
-  }
-  
-  /* Slider pour jours */
-  .slider-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  input[type="range"] {
-    width: 100%;
-    height: 0.5rem;
-    background: var(--border);
-    border-radius: 1rem;
-    cursor: pointer;
-    margin: 1rem 0;
-    -webkit-appearance: none;
-  }
-  
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: var(--transition);
-  }
-  
-  input[type="range"]::-moz-range-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-    transition: var(--transition);
-  }
-  
-  input[type="range"]:focus {
-    outline: none;
-  }
-  
-  input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 6px rgba(66, 133, 244, 0.2);
-  }
-  
-  /* Output pour l'affichage des jours */
-  output {
-    font-weight: 600;
-    color: var(--primary);
-    margin-left: 0.5rem;
-  }
-  
-  /* Checkbox styling */
-  .checkbox-group {
-    display: flex;
+    gap: 1rem;
     flex-direction: column;
-    gap: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    background-color: rgba(0, 0, 0, 0.02);
   }
-  
-  [data-theme="dark"] .checkbox-group {
-    background-color: rgba(255, 255, 255, 0.02);
-  }
-  
-  .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .checkbox-item label {
-    margin: 0;
-    cursor: pointer;
-    font-weight: normal;
-  }
-  
-  input[type="checkbox"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--border);
-    border-radius: 0.25rem;
-    background-color: var(--bg-input);
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-  }
-  
-  input[type="checkbox"]:checked {
-    background-color: var(--primary);
-    border-color: var(--primary);
-  }
-  
-  input[type="checkbox"]:checked::after {
-    content: "";
-    width: 0.5rem;
-    height: 0.75rem;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg) translate(-2px, -2px);
-    position: absolute;
-  }
-  
-  input[type="checkbox"]:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
-  }
-  
-  /* Section météo */
+
+  #selectionMenu,
   #weatherContainer {
-    flex: 2;
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
+    min-width: 100%;
   }
-  
-  #weatherInformation {
-    background: var(--bg-card);
-    border-radius: 1rem;
-    padding: 2rem;
-    width: 100%;
-    box-shadow: var(--box-shadow);
-    text-align: center;
-    position: relative;
-    min-height: 300px;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #weatherText {
-    color: var(--text-secondary);
-    font-size: 1.25rem;
-    font-weight: 500;
-  }
-  
-  /* Pied de page */
-  footer {
-    margin-top: 2rem;
-    text-align: center;
-    padding: 1.5rem 0;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-  }
-  
-  /* Médias responsives */
-  @media screen and (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-    
-    header {
-      padding: 1.5rem 0;
-      margin-bottom: 1.5rem;
-    }
-    
-    h1 {
-      font-size: 2.5rem;
-    }
-    
-    .header-top {
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    #themeToggle {
-      position: static;
-      transform: none;
-      width: fit-content;
-      margin: 0 auto;
-    }
-    
-    main {
-      gap: 1rem;
-      flex-direction: column;
-    }
-    
-    #selectionMenu,
-    #weatherContainer {
-      min-width: 100%;
-    }
-    
-    .form-group,
-    form {
-      margin-bottom: 1rem;
-    }
-  }
-  
-  @media screen and (max-width: 480px) {
-    h1 {
-      font-size: 2rem;
-    }
-    
-    .tagline {
-      font-size: 1rem;
-    }
-    
-    #selectionMenu,
-    #weatherInformation {
-      padding: 1.25rem;
-    }
-    
-    .checkbox-group {
-      padding: 0.75rem;
-    }
-  }
-  
-  /* Animation pour le chargement */
-  @keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
-  }
-  
-  .loading {
-    animation: pulse 1.5s infinite;
-  }
-  
-  /* Styles pour les données météo */
-  .weather-data {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-    align-items: stretch;
-    width: 100%;
-  }
-  
-  .weather-card {
-    background: var(--bg-card);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid var(--border);
-  }
-  
-  .weather-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px var(--shadow);
-  }
-  
-  .weather-date {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--primary);
-  }
-  
-  .weather-icon {
-    font-size: 3rem;
-    margin: 0.5rem 0;
-  }
-  
-  .weather-temp {
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
     font-size: 2rem;
-    font-weight: 700;
-    margin: 0.5rem 0;
   }
-  
-  .weather-details {
-    margin-top: 1rem;
-    width: 100%;
-    display: flex;
+
+  .history-details {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
-  
-  .weather-detail-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.25rem 0;
-    border-bottom: 1px dotted var(--border);
+
+  .history-reload-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.25rem;
   }
-  
-  .weather-detail-label {
-    color: var(--text-secondary);
+
+  .clear-history-btn {
+    padding: 0.25rem;
+    font-size: 0.7rem;
   }
-  
-  .weather-detail-value {
-    font-weight: 500;
+
+  #selectionMenu,
+  #weatherInformation {
+    padding: 1.25rem;
   }
-  
-  /* Styles pour les afficher une erreur */
-  .error-message {
-    padding: 1rem;
-    background-color: rgba(234, 67, 53, 0.1);
-    border-left: 4px solid var(--warning);
-    color: var(--warning);
-    border-radius: 0.5rem;
-    margin: 1rem 0;
-  }
-  
-  /* Classes d'aide */
-  .text-center { text-align: center; }
-  .mb-1 { margin-bottom: 0.5rem; }
-  .mb-2 { margin-bottom: 1rem; }
-  .mb-3 { margin-bottom: 1.5rem; }
-  .mt-1 { margin-top: 0.5rem; }
-  .mt-2 { margin-top: 1rem; }
-  .mt-3 { margin-top: 1.5rem; }
+}
