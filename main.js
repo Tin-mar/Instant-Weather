@@ -224,18 +224,18 @@ function displayWeatherData(meteoData, selectedDays, latitude, longitude) {
     <h2>Prévisions météo pour les ${selectedDays} prochain${selectedDays > 1 ? 's' : ''} jour${selectedDays > 1 ? 's' : ''}</h2>
     <div class="coordinates">
         <p><strong>Latitude :</strong> ${latitude}°</p>
-        <p><strong>Longitude :</strong> ${longitude}°</p>
+        <p><strong>Longitude :</strong> ${longitude}°<br> ----- </p>
     </div>
     <div class="weather-cards-container">
         ${meteoData.map((day, index) => `
             <div class="weather-card">
                 <h3 style="color: aqua;">${formatDateToFrench(day.datetime)}</h3>
                 <div class="weather-details">
-                    <p><strong>Températures:</strong> ${day.tmin}°C à ${day.tmax}°C</p>
-                    <p><strong>Probabilité de pluie:</strong> ${day.probarain}%</p>
-                    ${document.getElementById('checkbox-rain').checked ? `<p><strong>Cumul de pluie:</strong> ${day.rr10} mm</p>` : ''}
-                    ${document.getElementById('checkbox-wind').checked ? `<p><strong>Vent moyen:</strong> ${day.wind10m} km/h</p>` : ''}
-                    ${document.getElementById('checkbox-winddir').checked ? `<p><strong>Direction du vent:</strong> ${day.dirwind10m}°</p>` : ''}
+                    <p><strong>Températures :</strong> ${day.tmin}°C à ${day.tmax}°C</p>
+                    <p><strong>Probabilité de pluie :</strong> ${day.probarain} %</p>
+                    ${document.getElementById('checkbox-rain').checked ? `<p><strong>Cumul de pluie :</strong> ${day.rr10} mm</p>` : ''}
+                    ${document.getElementById('checkbox-wind').checked ? `<p><strong>Vent moyen :</strong> ${day.wind10m} km/h</p>` : ''}
+                    ${document.getElementById('checkbox-winddir').checked ? `<p><strong>Direction du vent :</strong> ${day.dirwind10m}°</p>` : ''}
                 </div>
             </div>
         `).join('')}
@@ -316,7 +316,7 @@ class WeatherHistory {
             const history = JSON.parse(localStorage.getItem('weatherHistory') || '[]');
             this.displayHistory(history);
         } catch (error) {
-            console.error('Erreur lors du chargement de l\'historique:', error);
+            console.error('Erreur lors du chargement de l\'historique :', error);
             this.displayHistory([]);
         }
     }
@@ -369,7 +369,7 @@ class WeatherHistory {
             // Afficher
             this.displayHistory(history);
         } catch (error) {
-            console.error('Erreur lors de l\'ajout à l\'historique:', error);
+            console.error('Erreur lors de l\'ajout à l\'historique :', error);
         }
     }
 
