@@ -1,0 +1,406 @@
+:root {
+  --primary: #4285f4;
+  --primary-dark: #3367d6;
+  --secondary: #34a853;
+  --warning: #ea4335;
+  --background-color: #09cece;
+  --card-background: #f5f5f5;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --box-shadow: 0 2px 10px rgba(60, 64, 67, 0.1);
+  --transition: all 0.3s ease-in-out;
+}
+
+.dark-mode {
+  --background-color: #423b3b;
+  --card-background: #1e1e1e;
+  --text: #ffffff;
+  --text-secondary: #ffffff;
+  --border: #423b3b;
+}
+
+.dark-mode #codePostal,
+.dark-mode #CommuneSelect,
+.dark-mode select option {
+  background-color: black;
+  color: white;
+}
+
+.dark-mode .checkbox-group,
+.dark-mode .history-container {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-color: #423b3b;
+}
+
+.dark-mode .history-item {
+  border-color: #423b3b;
+}
+
+.dark-mode .history-item:hover {
+  background-color: rgba(66, 133, 244, 0.1);
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode p,
+.dark-mode span,
+.dark-mode div,
+.dark-mode label,
+.dark-mode .weather-temp,
+.dark-mode .weather-detail-value,
+.dark-mode .weather-detail-label,
+.dark-mode .history-location,
+.dark-mode .history-details,
+.dark-mode .postal-code,
+.dark-mode .no-history {
+  color: #ffffff;
+}
+
+.dark-mode .weather-date,
+.dark-mode .history-location i,
+.dark-mode output,
+.dark-mode #weatherInformation h2,
+.dark-mode #weatherInformation h3 {
+  color: #09cece;
+}
+
+.dark-mode h1 {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  line-height: 1.6;
+  transition: var(--transition);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  padding: 2rem 0;
+  text-align: center;
+  margin-bottom: 2rem;
+  background-color: var(--card-background);
+  position: relative;
+}
+
+h1 {
+  font-family: 'Winky Rough', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+#themeToggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  background-color: var(--card-background);
+  transition: var(--transition);
+}
+
+#selectionMenu {
+  min-width: 300px;
+  background: var(--card-background);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  align-self: flex-start;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+#codePostal, #CommuneSelect {
+  background-color: white;
+  color: black;
+}
+
+.primary-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+output {
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 0.5rem;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-item label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: normal;
+  color: var(--text);
+}
+
+#weatherContainer {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+#weatherInformation {
+  background: var(--card-background);
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text);
+}
+
+.weather-data {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+}
+
+.weather-card {
+  background: var(--card-background);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.weather-date {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.weather-icon {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+}
+
+.weather-temp {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: var(--text);
+}
+
+.weather-details {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.weather-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px dotted var(--border);
+}
+
+.history-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.no-history {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 1rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.history-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.history-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.history-location i {
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.postal-code {
+  color: var(--text-secondary);
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
+.history-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.history-reload-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.clear-history-btn {
+  background: var(--warning);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  main {
+    gap: 1rem;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .history-details {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
