@@ -1,313 +1,266 @@
-const API_KEY = 'a06cefd21bcfe179404023316c1ede7ecab94915b9a7959ae201c44927632b26';
+const CLE_API = 'a06cefd21bcfe179404023316c1ede7ecab94915b9a7959ae201c44927632b26';
 
-// Attendre que le DOM soit complètement chargé
-document.addEventListener('DOMContentLoaded', function () {
-    initDarkMode();
-    initDaysMenu();
-    setupEventListeners();
-    window.weatherHistory = new WeatherHistory();
+document.addEventListener('DOMContentLoaded', () => {
+    initialiserModeSombre();
+    initialiserMenuJours();
+    configurerEcouteursEvenements();
+    window.historiqueMeteo = new HistoriqueMeteo();
 });
 
-// Fonction pour formater une date au format "jour de la semaine XX mois"
-function formatDateToFrench(dateString) {
-    const date = new Date(dateString);
-    const mois = [
-        'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-        'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
-    ];
-    const joursDeLaSemaine = [
-        'dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'
-    ];
+function formaterDateEnFrancais(chaineDate) {
+    const date = new Date(chaineDate);
+    const mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const joursSemaine = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 
-    const jourSemaine = joursDeLaSemaine[date.getDay()];
+    const jourSemaine = joursSemaine[date.getDay()];
     const jour = date.getDate().toString().padStart(2, '0');
-    const moisNom = mois[date.getMonth()];
+    const nomMois = mois[date.getMonth()];
 
-    return `${jourSemaine} ${jour} ${moisNom}`;
+    return `${jourSemaine} ${jour} ${nomMois}`;
 }
 
-// Initialisation du mode sombre
-function initDarkMode() {
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
+function initialiserModeSombre() {
+    const boutonTheme = document.getElementById('themeToggle');
+    const corpsDocument = document.body;
+    const prefereSchemaSombre = window.matchMedia('(prefers-color-scheme: dark)');
 
-    // Vérifier la préférence système de l'utilisateur
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const appliquerTheme = (estSombre) => {
+        if (estSombre) {
+            corpsDocument.classList.add('dark-mode');
+        } else {
+            corpsDocument.classList.remove('dark-mode');
+        }
+    };
 
-    // Vérifier la préférence sauvegardée ou utiliser la préférence système
-    if (localStorage.getItem('darkMode') === 'enabled' ||
-        (localStorage.getItem('darkMode') === null && prefersDarkScheme.matches)) {
-        body.classList.add('dark-mode');
+    const themeSauvegarde = localStorage.getItem('darkMode');
+    if (themeSauvegarde === 'enabled') {
+        appliquerTheme(true);
+    } else if (themeSauvegarde === 'disabled') {
+        appliquerTheme(false);
+    } else {
+        appliquerTheme(prefereSchemaSombre.matches);
     }
 
-    // Basculer le mode sombre au clic du bouton
-    themeToggle.addEventListener('click', function () {
-        body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+    boutonTheme.addEventListener('click', () => {
+        const estModeSombre = corpsDocument.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', estModeSombre ? 'enabled' : 'disabled');
     });
 
-    // Écouter les changements de préférence système
-    prefersDarkScheme.addEventListener('change', (e) => {
-        // Ne pas écraser la préférence explicite de l'utilisateur
+    prefereSchemaSombre.addEventListener('change', (e) => {
         if (localStorage.getItem('darkMode') === null) {
-            if (e.matches) {
-                body.classList.add('dark-mode');
-            } else {
-                body.classList.remove('dark-mode');
-            }
+            appliquerTheme(e.matches);
         }
     });
 }
 
-// Initialisation du slider de jours
-function initDaysMenu() {
-    const daysSelect = document.getElementById("daysSelect");
-    const daysValue = document.getElementById("days-value");
+function initialiserMenuJours() {
+    const selectionJours = document.getElementById("daysSelect");
+    const valeurJours = document.getElementById("days-value");
 
-    // Définir le texte initial
-    updateDaysText(daysSelect.value);
+    const mettreAJourTexteJours = (jours) => {
+        const nombreJours = parseInt(jours, 10);
+        const texte = `${nombreJours} jour${nombreJours > 1 ? "s" : ""}`;
+        valeurJours.textContent = texte;
+        selectionJours.setAttribute('aria-valuenow', nombreJours);
+        selectionJours.setAttribute('aria-valuetext', texte);
+    };
 
-    // Mettre à jour le texte lors du changement
-    daysSelect.addEventListener("input", () => {
-        updateDaysText(daysSelect.value);
+    mettreAJourTexteJours(selectionJours.value);
+    selectionJours.addEventListener("input", () => mettreAJourTexteJours(selectionJours.value));
+}
+
+function configurerEcouteursEvenements() {
+    const inputCodePostal = document.getElementById('code-postal');
+    const boutonValidation = document.getElementById('validationButton');
+    const formulairePostal = document.getElementById('postal_form');
+
+    inputCodePostal.addEventListener('input', debounce(gererInputCodePostal, 300));
+    formulairePostal.addEventListener('submit', (e) => {
+        e.preventDefault();
+        gererRechercheMeteo();
     });
-
-    function updateDaysText(days) {
-        daysValue.textContent = `${days} jour${days > 1 ? "s" : ""}`;
-        daysSelect.setAttribute('aria-valuenow', days);
-        daysSelect.setAttribute('aria-valuetext', `${days} jour${days > 1 ? "s" : ""}`);
-    }
+    boutonValidation.addEventListener('click', (e) => {
+        e.preventDefault();
+        gererRechercheMeteo();
+    });
 }
 
-function setupEventListeners() {
-    const codePostalInput = document.getElementById('code-postal');
-    const validationButton = document.getElementById('validationButton');
-
-    // Événement pour la recherche de communes
-    codePostalInput.addEventListener('input', debounce(handleCodePostalInput, 300));
-
-    // Événement pour la recherche météo
-    validationButton.addEventListener('click', handleMeteoSearch);
-}
-
-// Fonction de debounce pour limiter les appels API
-function debounce(func, delay) {
+function debounce(func, delai) {
     let timeout;
-    return function () {
-        const context = this;
-        const args = arguments;
+    return function (...args) {
         clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(context, args), delay);
+        timeout = setTimeout(() => func.apply(this, args), delai);
     };
 }
 
-// Gestion de l'entrée du code postal
-async function handleCodePostalInput(event) {
-    const codePostal = event.target.value;
-    const communeSelect = document.getElementById('communeSelect');
-    const validationButton = document.getElementById('validationButton');
+async function gererInputCodePostal(evenement) {
+    const codePostal = evenement.target.value.trim();
+    const selectCommune = document.getElementById('communeSelect');
+    const boutonValidation = document.getElementById('validationButton');
 
-    // Cacher les éléments par défaut
-    communeSelect.style.display = "none";
-    validationButton.style.display = "none";
+    selectCommune.style.display = "none";
+    boutonValidation.style.display = "none";
 
-    // Vérifier si le code postal est valide
-    if (/^\d{5}$/.test(codePostal)) {
-        try {
-            const communes = await fetchCommunesByCodePostal(codePostal);
+    if (!/^\d{5}$/.test(codePostal)) return;
 
-            // Réinitialiser le select
-            communeSelect.innerHTML = '<option value="" disabled selected>Sélectionnez une commune</option>';
+    const communes = await recupererCommunesParCodePostal(codePostal);
+    selectCommune.innerHTML = '<option value="" disabled selected>Sélectionnez une commune</option>';
 
-            // Ajouter les options
-            communes.forEach(commune => {
-                const option = document.createElement('option');
-                option.value = commune.code;
-                option.textContent = commune.nom;
-                option.dataset.lat = commune.centre?.coordinates[1] || '';
-                option.dataset.lon = commune.centre?.coordinates[0] || '';
-                communeSelect.appendChild(option);
-            });
+    if (communes.length === 0) return;
 
-            if (communes.length) {
-                communeSelect.style.display = "block";
-                validationButton.style.display = "block";
-            } else {
-                showNotification("Aucune commune trouvée pour ce code postal.", "error");
-            }
-        } catch (error) {
-            showNotification("Erreur lors de la recherche des communes.", "error");
-        }
-    }
+    communes.forEach(commune => {
+        const option = document.createElement('option');
+        option.value = commune.code;
+        option.textContent = commune.nom;
+        option.dataset.lat = commune.centre.coordinates[1].toString();
+        option.dataset.lon = commune.centre.coordinates[0].toString();
+        selectCommune.appendChild(option);
+    });
+
+    selectCommune.style.display = "block";
+    boutonValidation.style.display = "block";
 }
 
-// Récupération des communes par code postal
-async function fetchCommunesByCodePostal(codePostal) {
-    try {
-        const url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(codePostal)}&fields=code,nom,centre&boost=population&limit=10`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Erreur réseau: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.length ? data : [];
-    } catch (error) {
-        console.error("Erreur lors de la récupération des communes:", error);
-        return [];
-    }
+async function recupererCommunesParCodePostal(codePostal) {
+    const url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(codePostal)}&fields=code,nom,centre&boost=population&limit=10`;
+    const reponse = await fetch(url);
+    const donnees = await reponse.json();
+    return donnees;
 }
 
-// Récupération des données météo par code INSEE
-async function fetchMeteoByCommune(codeInsee, days) {
-    try {
-        const url = `https://api.meteo-concept.com/api/forecast/daily?token=${API_KEY}&insee=${codeInsee}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Erreur réseau: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.forecast?.slice(0, days) || [];
-    } catch (error) {
-        console.error("Erreur lors de la récupération des prévisions météo:", error);
-        return [];
-    }
+async function recupererMeteoParCommune(codeInsee, jours) {
+    const url = `https://api.meteo-concept.com/api/forecast/daily?token=${CLE_API}&insee=${encodeURIComponent(codeInsee)}`;
+    const reponse = await fetch(url);
+    const donnees = await reponse.json();
+    return donnees.forecast.slice(0, jours);
 }
 
-// Gestion de la recherche météo
-async function handleMeteoSearch() {
-    const communeSelect = document.getElementById('communeSelect');
-    const selectedOption = communeSelect.options[communeSelect.selectedIndex];
+async function gererRechercheMeteo() {
+    const selectCommune = document.getElementById('communeSelect');
+    const selectJours = document.getElementById('daysSelect');
+    const inputCodePostal = document.getElementById('code-postal');
+    const infoMeteo = document.getElementById("weatherInformation");
 
-    // Vérifier si une commune est sélectionnée
-    if (communeSelect.selectedIndex <= 0) {
-        showNotification("Veuillez sélectionner une commune.", "error");
-        return;
-    }
+    if (selectCommune.selectedIndex <= 0) return;
 
-    const selectedCommune = selectedOption.value;
-    const latitude = selectedOption.dataset.lat;
-    const longitude = selectedOption.dataset.lon;
-    const selectedDays = parseInt(document.getElementById('daysSelect').value, 10);
-    const codePostal = document.getElementById('code-postal').value;
-    const communeName = selectedOption.textContent;
+    const optionSelectionnee = selectCommune.options[selectCommune.selectedIndex];
+    const communeSelectionnee = optionSelectionnee.value;
+    const latitude = optionSelectionnee.dataset.lat;
+    const longitude = optionSelectionnee.dataset.lon;
+    const joursSelectionnes = parseInt(selectJours.value, 10);
+    const codePostal = inputCodePostal.value;
+    const nomCommune = optionSelectionnee.textContent;
 
-    if (selectedCommune && selectedDays) {
-        try {
-            // Afficher un indicateur de chargement
-            const weatherInfo = document.getElementById("weatherInformation");
-            weatherInfo.innerHTML = '<div class="loading">Chargement des données météo...</div>';
-            weatherInfo.style.display = "block";
+    infoMeteo.innerHTML = '<div class="loading">Chargement des données météo...</div>';
+    infoMeteo.style.display = "block";
 
-            const meteoData = await fetchMeteoByCommune(selectedCommune, selectedDays);
+    const donneesMeteo = await recupererMeteoParCommune(communeSelectionnee, joursSelectionnes);
+    if (donneesMeteo.length === 0) return;
 
-            if (meteoData.length) {
-                displayWeatherData(meteoData, selectedDays, latitude, longitude);
-
-                if (window.weatherHistory) {
-                    window.weatherHistory.addToHistory({
-                        commune: communeName,
-                        codePostal: codePostal,
-                        codeInsee: selectedCommune,
-                        latitude: latitude,
-                        longitude: longitude,
-                        days: selectedDays
-                    });
-                }
-            } else {
-                showNotification("Aucune donnée météo disponible pour cette commune.", "error");
-                weatherInfo.style.display = "none";
-            }
-        } catch (error) {
-            showNotification("Erreur lors de la récupération des données météo.", "error");
-            document.getElementById("weatherInformation").style.display = "none";
-        }
-    } else {
-        showNotification("Veuillez sélectionner une commune et le nombre de jours.", "error");
-    }
+    afficherDonneesMeteo(donneesMeteo, joursSelectionnes, latitude, longitude);
+    window.historiqueMeteo.ajouterAHistorique({
+        commune: nomCommune,
+        codePostal: codePostal,
+        codeInsee: communeSelectionnee,
+        latitude: latitude,
+        longitude: longitude,
+        jours: joursSelectionnes
+    });
 }
 
-// Affichage des données météo
-function displayWeatherData(meteoData, selectedDays, latitude, longitude) {
-    const weatherInfo = document.getElementById("weatherInformation");
+function afficherDonneesMeteo(donneesMeteo, joursSelectionnes, latitude, longitude) {
+    const infoMeteo = document.getElementById("weatherInformation");
+    const afficherLat = document.getElementById('checkbox-lat')?.checked || false;
+    const afficherLon = document.getElementById('checkbox-lon')?.checked || false;
+    const afficherPluie = document.getElementById('checkbox-rain')?.checked || false;
+    const afficherVent = document.getElementById('checkbox-wind')?.checked || false;
+    const afficherDirVent = document.getElementById('checkbox-winddir')?.checked || false;
 
-    weatherInfo.innerHTML = `
-    <h2>Prévisions météo pour les ${selectedDays} prochain${selectedDays > 1 ? 's' : ''} jour${selectedDays > 1 ? 's' : ''}</h2>
-    <div class="coordinates">
-        <p><strong>Latitude :</strong> ${latitude}°</p>
-        <p><strong>Longitude :</strong> ${longitude}°<br> ----- </p>
-    </div>
+    const formaterValeur = (valeur, unite = '', valeurDefaut = 'N/A') => {
+        if (valeur === null || valeur === undefined || valeur === '') return valeurDefaut;
+        return `${valeur}${unite}`;
+    };
+
+    let sectionCoordonnees = '';
+    if (afficherLat || afficherLon) {
+        sectionCoordonnees = `
+        <div class="coordinates">
+            ${afficherLat ? `<p><strong>Latitude :</strong> ${parseFloat(latitude).toFixed(4)}°</p>` : ''}
+            ${afficherLon ? `<p><strong>Longitude :</strong> ${parseFloat(longitude).toFixed(4)}°</p>` : ''}
+            <hr>
+        </div>`;
+    }
+
+    infoMeteo.innerHTML = `
+    <h2>Prévisions météo pour les ${joursSelectionnes} prochain${joursSelectionnes > 1 ? 's' : ''} jour${joursSelectionnes > 1 ? 's' : ''}</h2>
+    ${sectionCoordonnees}
     <div class="weather-cards-container">
-        ${meteoData.map((day, index) => `
+        ${donneesMeteo.map((jour) => {
+            const tmin = formaterValeur(jour.tmin, '°C');
+            const tmax = formaterValeur(jour.tmax, '°C');
+            const probarain = formaterValeur(jour.probarain, '%');
+            const rr10 = formaterValeur(jour.rr10, ' mm');
+            const vent10m = formaterValeur(jour.wind10m, ' km/h');
+            const dirVent10m = formaterValeur(jour.dirwind10m, '°');
+
+            return `
             <div class="weather-card">
-                <h3 style="color: aqua;">${formatDateToFrench(day.datetime)}</h3>
+                <h3 style="color: aqua;">${formaterDateEnFrancais(jour.datetime)}</h3>
                 <div class="weather-details">
-                    <p><strong>Températures :</strong> ${day.tmin}°C à ${day.tmax}°C</p>
-                    <p><strong>Probabilité de pluie :</strong> ${day.probarain} %</p>
-                    ${document.getElementById('checkbox-rain')?.checked ? `<p><strong>Cumul de pluie :</strong> ${day.rr10} mm</p>` : ''}
-                    ${document.getElementById('checkbox-wind')?.checked ? `<p><strong>Vent moyen :</strong> ${day.wind10m} km/h</p>` : ''}
-                    ${document.getElementById('checkbox-winddir')?.checked ? `<p><strong>Direction du vent :</strong> ${day.dirwind10m}°</p>` : ''}
+                    <p><strong>Températures :</strong> ${tmin} à ${tmax}</p>
+                    <p><strong>Probabilité de pluie :</strong> ${probarain}</p>
+                    ${afficherPluie ? `<p><strong>Cumul de pluie :</strong> ${rr10}</p>` : ''}
+                    ${afficherVent ? `<p><strong>Vent moyen :</strong> ${vent10m}</p>` : ''}
+                    ${afficherDirVent ? `<p><strong>Direction du vent :</strong> ${dirVent10m}</p>` : ''}
                 </div>
             </div>
-        `).join('')}
+            `;
+        }).join('')}
     </div>
     `;
 
-    weatherInfo.style.display = "block";
+    infoMeteo.style.display = "block";
 }
 
-// Affichage de notifications
-function showNotification(message, type = "info") {
-    // Vérifier si une notification existe déjà
+function afficherNotification(message, type = "info") {
     let notification = document.querySelector('.notification');
+    if (notification) notification.remove();
 
-    // Si elle existe, la supprimer
-    if (notification) {
-        notification.remove();
-    }
-
-    // Créer une nouvelle notification
     notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
-
-    // Ajouter la notification au DOM
+    notification.setAttribute('role', 'alert');
+    notification.setAttribute('aria-live', 'polite');
     document.body.appendChild(notification);
 
-    // Faire apparaître la notification
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
 
-    // Faire disparaître la notification après 3 secondes
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
-            notification.remove();
+            if (notification.parentNode) notification.remove();
         }, 300);
-    }, 3000);
+    }, 4000);
 }
 
-class WeatherHistory {
+class HistoriqueMeteo {
     constructor() {
-        this.maxHistoryItems = 10; // Limite à 10 éléments
+        this.nombreMaxElementsHistorique = 10;
+        this.cleStockage = 'weatherHistory';
         this.init();
     }
 
     init() {
-        this.createHistorySection();
-        this.loadHistory();
-        this.bindEvents();
+        this.creerSectionHistorique();
+        this.chargerHistorique();
+        this.associerEvenements();
     }
 
-    // Créer la section historique dans le DOM
-    createHistorySection() {
-        const selectionMenu = document.getElementById('selectionMenu');
-
-        const historyHTML = `
+    creerSectionHistorique() {
+        const menuSelection = document.getElementById('selectionMenu');
+        const htmlHistorique = `
             <div class="option-section" id="historySection">
                 <h3>
                     <i class="fas fa-history" aria-hidden="true"></i> Historique des recherches
@@ -320,98 +273,69 @@ class WeatherHistory {
                 </div>
             </div>
         `;
-
-        selectionMenu.insertAdjacentHTML('beforeend', historyHTML);
+        menuSelection.insertAdjacentHTML('beforeend', htmlHistorique);
     }
 
-    // Charger l'historique depuis le stockage local
-    loadHistory() {
-        try {
-            const history = JSON.parse(localStorage.getItem('weatherHistory') || '[]');
-            this.displayHistory(history);
-        } catch (error) {
-            console.error('Erreur lors du chargement de l\'historique :', error);
-            this.displayHistory([]);
-        }
+    chargerHistorique() {
+        const historique = JSON.parse(localStorage.getItem(this.cleStockage) || '[]');
+        this.afficherHistorique(historique);
     }
 
-    // Ajouter une recherche à l'historique
-    addToHistory(searchData) {
-        try {
-            let history = JSON.parse(localStorage.getItem('weatherHistory') || '[]');
+    ajouterAHistorique(donneesRecherche) {
+        let historique = JSON.parse(localStorage.getItem(this.cleStockage) || '[]');
+        const elementHistorique = {
+            id: Date.now(),
+            commune: donneesRecherche.commune,
+            codePostal: donneesRecherche.codePostal,
+            codeInsee: donneesRecherche.codeInsee,
+            latitude: parseFloat(donneesRecherche.latitude).toFixed(4),
+            longitude: parseFloat(donneesRecherche.longitude).toFixed(4),
+            jours: parseInt(donneesRecherche.jours, 10),
+            timestamp: new Date().toISOString(),
+            dateAffichage: new Date().toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })
+        };
 
-            // Créer l'objet de recherche
-            const searchItem = {
-                id: Date.now(),
-                commune: searchData.commune,
-                codePostal: searchData.codePostal,
-                codeInsee: searchData.codeInsee,
-                latitude: parseFloat(searchData.latitude).toFixed(4),
-                longitude: parseFloat(searchData.longitude).toFixed(4),
-                days: searchData.days,
-                timestamp: new Date().toISOString(),
-                displayDate: new Date().toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })
-            };
+        const indexExistant = historique.findIndex(element => element.codeInsee === elementHistorique.codeInsee && element.jours === elementHistorique.jours);
+        if (indexExistant !== -1) historique.splice(indexExistant, 1);
 
-            // Vérifier si cette recherche existe déjà (même commune, même nombre de jours)
-            const existingIndex = history.findIndex(item =>
-                item.codeInsee === searchItem.codeInsee && item.days === searchItem.days
-            );
+        historique.unshift(elementHistorique);
+        if (historique.length > this.nombreMaxElementsHistorique) historique = historique.slice(0, this.nombreMaxElementsHistorique);
 
-            // Si elle existe, la supprimer pour la remettre en premier
-            if (existingIndex !== -1) {
-                history.splice(existingIndex, 1);
-            }
-
-            // Ajouter en premier
-            history.unshift(searchItem);
-
-            // Limiter à maxHistoryItems
-            if (history.length > this.maxHistoryItems) {
-                history = history.slice(0, this.maxHistoryItems);
-            }
-
-            // Sauvegarder
-            localStorage.setItem('weatherHistory', JSON.stringify(history));
-
-            // Afficher
-            this.displayHistory(history);
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout à l\'historique :', error);
-        }
+        localStorage.setItem(this.cleStockage, JSON.stringify(historique));
+        this.afficherHistorique(historique);
     }
 
-    // Afficher l'historique dans le DOM
-    displayHistory(history) {
-        const container = document.getElementById('historyContainer');
-
-        if (!history || history.length === 0) {
-            container.innerHTML = '<p class="no-history">Aucune recherche effectuée</p>';
+    afficherHistorique(historique) {
+        const conteneur = document.getElementById('historyContainer');
+        if (!historique || historique.length === 0) {
+            conteneur.innerHTML = '<p class="no-history">Aucune recherche effectuée</p>';
             return;
         }
 
-        const historyHTML = history.map(item => `
-            <div class="history-item" data-search='${JSON.stringify(item)}'>
+        const htmlHistorique = historique.map(element => {
+            const donneesEscapees = this.echapperHtml(JSON.stringify(element));
+            return `
+            <div class="history-item" data-search='${donneesEscapees}'>
                 <div class="history-main">
                     <div class="history-location">
                         <i class="fas fa-map-marker-alt"></i>
-                        <strong>${item.commune}</strong>
-                        <span class="postal-code">(${item.codePostal})</span>
+                        <strong>${this.echapperHtml(element.commune)}</strong>
+                        <span class="postal-code">(${this.echapperHtml(element.codePostal)})</span>
                     </div>
                     <div class="history-details">
                         <span class="history-days">
                             <i class="fas fa-calendar-alt"></i>
-                            ${item.days} jour${item.days > 1 ? 's' : ''}
+                            ${element.jours} jour${element.jours > 1 ? 's' : ''}
                         </span>
                         <span class="history-date">
                             <i class="fas fa-clock"></i>
-                            ${item.displayDate}
+                            ${this.echapperHtml(element.dateAffichage)}
                         </span>
                     </div>
                 </div>
@@ -419,74 +343,63 @@ class WeatherHistory {
                     <i class="fas fa-redo"></i>
                 </button>
             </div>
-        `).join('');
-
-        container.innerHTML = historyHTML;
-    }
-
-    // Relancer une recherche depuis l'historique
-    reloadSearch(searchData) {
-        try {
-            // Remplir les champs du formulaire
-            const codePostalInput = document.getElementById('code-postal');
-            const communeSelect = document.getElementById('communeSelect');
-            const daysSelect = document.getElementById('daysSelect');
-
-            // Définir le code postal
-            codePostalInput.value = searchData.codePostal;
-
-            // Créer et sélectionner l'option de commune
-            communeSelect.innerHTML = `
-                <option value="" disabled>Sélectionnez une commune</option>
-                <option value="${searchData.codeInsee}" selected
-                        data-lat="${searchData.latitude}"
-                        data-lon="${searchData.longitude}">
-                    ${searchData.commune}
-                </option>
             `;
-            communeSelect.style.display = "block";
+        }).join('');
 
-            // Définir le nombre de jours
-            daysSelect.value = searchData.days;
-            const daysValue = document.getElementById("days-value");
-            daysValue.textContent = `${searchData.days} jour${searchData.days > 1 ? "s" : ""}`;
-
-            // Afficher le bouton de validation
-            document.getElementById('validationButton').style.display = "block";
-
-            // Déclencher automatiquement la recherche
-            setTimeout(() => {
-                handleMeteoSearch();
-            }, 500);
-
-        } catch (error) {
-            console.error('Erreur lors du rechargement de la recherche:', error);
-            showNotification('Erreur lors du rechargement de la recherche', 'error');
-        }
+        conteneur.innerHTML = htmlHistorique;
     }
 
-    // Vider l'historique
-    clearHistory() {
+    echapperHtml(texte) {
+        const div = document.createElement('div');
+        div.textContent = texte;
+        return div.innerHTML;
+    }
+
+    rechargerRecherche(donneesRecherche) {
+        const inputCodePostal = document.getElementById('code-postal');
+        const selectCommune = document.getElementById('communeSelect');
+        const selectJours = document.getElementById('daysSelect');
+        const boutonValidation = document.getElementById('validationButton');
+
+        inputCodePostal.value = donneesRecherche.codePostal;
+        selectCommune.innerHTML = `
+            <option value="" disabled>Sélectionnez une commune</option>
+            <option value="${this.echapperHtml(donneesRecherche.codeInsee)}" selected
+                    data-lat="${donneesRecherche.latitude}"
+                    data-lon="${donneesRecherche.longitude}">
+                ${this.echapperHtml(donneesRecherche.commune)}
+            </option>
+        `;
+        selectCommune.style.display = "block";
+        selectJours.value = donneesRecherche.jours;
+        const valeurJours = document.getElementById("days-value");
+        if (valeurJours) valeurJours.textContent = `${donneesRecherche.jours} jour${donneesRecherche.jours > 1 ? "s" : ""}`;
+        boutonValidation.style.display = "block";
+
+        setTimeout(() => gererRechercheMeteo(), 500);
+        afficherNotification('Recherche rechargée depuis l\'historique', 'success');
+    }
+
+    viderHistorique() {
         if (confirm('Êtes-vous sûr de vouloir vider l\'historique des recherches ?')) {
-            localStorage.removeItem('weatherHistory');
-            this.displayHistory([]);
-            showNotification('Historique vidé avec succès', 'success');
+            localStorage.removeItem(this.cleStockage);
+            this.afficherHistorique([]);
+            afficherNotification('Historique vidé avec succès', 'success');
         }
     }
 
-    // Lier les événements
-    bindEvents() {
-        // Bouton pour vider l'historique
+    associerEvenements() {
         document.addEventListener('click', (e) => {
             if (e.target.closest('#clearHistoryBtn')) {
-                this.clearHistory();
+                e.preventDefault();
+                this.viderHistorique();
             }
 
-            // Bouton pour relancer une recherche
             if (e.target.closest('.history-reload-btn')) {
-                const historyItem = e.target.closest('.history-item');
-                const searchData = JSON.parse(historyItem.dataset.search);
-                this.reloadSearch(searchData);
+                e.preventDefault();
+                const elementHistorique = e.target.closest('.history-item');
+                const donneesRecherche = JSON.parse(elementHistorique.dataset.search);
+                this.rechargerRecherche(donneesRecherche);
             }
         });
     }
