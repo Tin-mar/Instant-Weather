@@ -1,6 +1,6 @@
 # Instant-Weather
 
-Projet de 1ère année ayant pour but de réaliser un **site Web dynamique**, utilisant une API Météo ["Météo Concept"](https://api.meteo-concept.com/) sur les informations Météo.  
+Projet de permière année ayant pour but de réaliser un **site Web dynamique**, utilisant une API d'informations Météo ["Météo Concept"](https://api.meteo-concept.com/) permettant de les afficher grâce à ton token.  
 
 ## Caractéristiques Du Site Web
 
