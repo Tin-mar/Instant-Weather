@@ -1,6 +1,6 @@
 # Instant-Weather
 
-Projet de permière année ayant pour but de réaliser un **site Web dynamique**, utilisant une API d'informations Météo ["Météo Concept"](https://api.meteo-concept.com/) permettant de les afficher grâce à ton token.  
+Projet de première année ayant pour but de réaliser un **site Web dynamique**, utilisant une API d'informations Météo ["Météo Concept"](https://api.meteo-concept.com/) permettant de les afficher grâce à ton token.  
 
 ## Caractéristiques Du Site Web
 
@@ -34,7 +34,7 @@ https://tin-mar.github.io/Instant-Weather/
 
 ## Précision Importante pour évaluation
 
-COmme vous pouvez l'observer, je n'ai pas un **grand nombre de commits** sur ce répertoire. En effet, j'avais crée un répertoire bien avant mais l'avait paramétré en tant que **privé**, me privant de publier avec **GithubPages** (en tout cas tout le monde dans mon entourage ne savait pas non plus. Je vous prie de prendre cela en compte s'il vous plaît. Merci de votre compréhension.
+COmme vous pouvez l'observer, je n'ai pas un **grand nombre de commits** sur ce répertoire. En effet, j'avais crée un répertoire bien avant mais l'avait paramétré en tant que **privé**, me privant de publier avec **GithubPages** (en tout cas tout le monde dans mon entourage ne savait pas non plus comment le publier tout en étant privé). Je vous prie de prendre cela en compte s'il vous plaît. Merci de votre compréhension.
 
 ## Crédits
 
