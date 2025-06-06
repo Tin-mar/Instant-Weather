@@ -32,6 +32,10 @@ Pour **accéder** au site et le visiter, veuillez **cliquer** sur ce lien :
 
 https://tin-mar.github.io/Instant-Weather/ 
 
+## Précision Importante pour évaluation
+
+COmme vous pouvez l'observer, je n'ai pas un **grand nombre de commits** sur ce répertoire. En effet, j'avais crée un répertoire bien avant mais l'avait paramétré en tant que **privé**, me privant de publier avec **GithubPages** (en tout cas tout le monde dans mon entourage ne savait pas non plus. Je vous prie de prendre cela en compte s'il vous plaît. Merci de votre compréhension.
+
 ## Crédits
 
-Site Web réalisé par Bretonnière Martin.
+Site Web réalisé par **Bretonnière Martin**.
